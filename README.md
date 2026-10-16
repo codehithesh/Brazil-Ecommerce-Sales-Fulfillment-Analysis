@@ -1,12 +1,20 @@
 ![alt text](https://github.com/codehithesh/Brazil-Ecommerce-Sales-Fulfillment-Analysis/blob/main/assets/banner.jpg)
 
 # Brazilian E-commerce Sales and Fulfillment Analysis, 2016-2018: Growth, Seasonality, Delivery vs. Estimates
-BigQuery, SQL analysis on retail transactions. CTEs, Date Time functions, Window functions, 
+BigQuery, SQL analysis on retail transactions. CTEs, Date Time functions, Window functions
 
 ## Executive Summary
 * **Answer:** No. Men spend more than women on Black Friday: ₹9,437 vs ₹8,735 per transaction (95% CI [₹9,411, ₹9,463] vs [₹8,694, ₹8,776]), a gap of ~8%.
 * **Where the value is:** Ages 26-45 and City B make up the largest share of revenue, driven by customer volume rather than higher order value.
 * **Implication:** If prioritizing segments for targeting, start with these. Confirming ROI needs cost and response data this dataset lacks.
+
+
+## Watch Video Presentation
+
+<a href="https://www.youtube.com/watch?v=c316uVDjDFY" target="_blank">
+  <img src="https://img.youtube.com/vi/c316uVDjDFY/hqdefault.jpg" alt="Watch Video on YouTube" width="400" />
+</a>
+
 
 ## About Business
 Target is a globally renowned brand and a prominent retailer in the United States. Target makes it easy, shop-worthy, and inspiring, offering a store-hug feeling, e-commerce site, and apps for seamless and spent experience that's standard for modern retail.
