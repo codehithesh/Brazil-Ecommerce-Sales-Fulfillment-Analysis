@@ -6,7 +6,7 @@ Target is a globally renowned brand and a prominent retailer in the United State
 
 This particular dataset includes 100k orders made on Target in Brazil and provides insights and operations of 100k orders placed between 2016 and 2018. The dataset allows an exploration of various dimensions, including order status, price, payment and freight performance, customer location, product attributes, and customer reviews.
 
-Data analysis on the dataset is paramount, standardizing custom data processing, Target's operations in Brazil, customer experience, seller performance, logistics, freight cost, order processing, delivery speed, and overall performance, offering comprehensive insights into customer characteristics, product attributes, and customer behavior.
+Do exploratory data analysis, standardizing custom data processing, Target's operations in Brazil, customer experience, seller performance, logistics, freight cost, order processing, delivery speed, and overall performance, offering comprehensive insights into customer characteristics, product attributes, and customer behavior.
 
 **Dataset link:** 
 `https://d3ilbtxij3a859.cloudfront.net/31a47b850d18086aed15d03a1d95.zip`

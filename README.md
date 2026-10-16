@@ -1,4 +1,4 @@
-![alt text](https://github.com/Singularity-Coder/Retail-Sales-and-Fulfillment-Analysis/blob/main/assets/banner.png)
+![alt text](https://github.com/codehithesh/Brazil-Ecommerce-Sales-Fulfillment-Analysis/blob/main/assets/banner.jpg)
 
 # Brazilian E-commerce Sales and Fulfillment Analysis, 2016-2018: Growth, Seasonality, Delivery vs. Estimates
 BigQuery, SQL analysis on retail transactions. CTEs, Date Time functions, Window functions, 
@@ -9,30 +9,46 @@ BigQuery, SQL analysis on retail transactions. CTEs, Date Time functions, Window
 * **Implication:** If prioritizing segments for targeting, start with these. Confirming ROI needs cost and response data this dataset lacks.
 
 ## About Business
-Walmart is an American multinational retail corporation that operates a chain of supercenters, discount departmental stores, and grocery stores from the United States. Walmart has more than 100 million customers worldwide.
+Target is a globally renowned brand and a prominent retailer in the United States. Target makes it easy, shop-worthy, and inspiring, offering a store-hug feeling, e-commerce site, and apps for seamless and spent experience that's standard for modern retail.
 
 ## Problem Statement
-The Management team at Walmart Inc. wants to analyze the customer purchase behavior (specifically, purchase amount) against the customer’s gender and the various other factors to help the business make better decisions. They want to understand if the spending habits differ between male and female customers: Do women spend more on Black Friday than men? (Assume 50 million customers are male and 50 million are female).
+Do exploratory data analysis, standardizing custom data processing, Target's operations in Brazil, customer experience, seller performance, logistics, freight cost, order processing, delivery speed, and overall performance, offering comprehensive insights into customer characteristics, product attributes, and customer behavior.
 
 ## Data Schema (ERD)
-* Tables: walmart_data
-* Total Records: 550,068
+* Tables:
+    * customers.csv
+    * geolocation.csv
+    * order_items.csv
+    * order_payments.csv
+    * order_reviews.csv
+    * orders.csv
+    * products.csv
+    * sellers.csv
+* Total Records: 100k
 
-![alt text](https://github.com/codehithesh/Black-Friday-Customer-Spend-Analysis/blob/main/assets/erd/erd.png)
+![alt text](https://github.com/codehithesh/Brazil-Ecommerce-Sales-Fulfillment-Analysis/blob/main/assets/erd/erd.png)
 
 
 ## Metrics
 
-**Primary metric**
-* Spend per customer: total purchase per User_ID, compared by gender with a 95% CI
+**Primary metrics**
+* **Monthly order count** (`COUNT(DISTINCT order_id)` by `order_purchase_timestamp` month): answers "is it growing?"
+* **Delivery vs. estimate gap**: `order_estimated_delivery_date - order_delivered_customer_date`, in days, delivered orders only. Positive means early, negative means late. Answers "are orders arriving on time?"
 
 **Supporting metrics**
-* Revenue share by segment
-* Customer count per segment
-* Probability of a high-value purchase
+* On-time delivery rate: share of delivered orders with gap >= 0
+* Average delivery time (purchase to delivery, in days) by state
+* Order value: total and average `price` per order
+* Freight value: total and average `freight_value` per order, plus freight as a % of price
+* Payment mix: order count by `payment_type`, by month and year
+* Average `payment_installments` by payment type
+* Order count by customer state and by day of week / hour
 
 **Guardrail metrics**
-* Median spend per customer (checks that the mean isn't driven by outliers)
+* Order status mix: share of `delivered` vs. cancelled/unavailable. Delivery metrics use only delivered orders, so this shows how much is excluded.
+* Missing delivery dates: count of delivered orders with null `order_delivered_customer_date`
+* Orders per month, flagged for sparse 2016 and incomplete late 2018 months, so growth isn't overstated
+* Median alongside mean for delivery time, price, and freight (all are right-skewed)
 
 
 ## Insights
@@ -115,16 +131,10 @@ The Management team at Walmart Inc. wants to analyze the customer purchase behav
 
 
 ## Tech Stack
-* Python
-* Numpy
-* Pandas
-* Scipy 
-* Seaborn
-* Matplotlib
-* Statistical Inference
-* Hypothesis Testing
+* BigQuery
+* SQL - CTEs, WIndow Functions
 
 
 ## How to run
 * Import `black_friday_customer_spend_analysis.ipynb` into Jupyter notebook. 
-* Then from the menu `Run` -> `Run All Cells`.
+* Copy each SQL query and paste in Google BigQuery.
