@@ -1,28 +1,130 @@
 ![alt text](https://github.com/Singularity-Coder/Retail-Sales-and-Fulfillment-Analysis/blob/main/assets/banner.png)
 
-# Retail Sales & Fulfillment Analysis
-
-## Project Background
-A multinational brand similar to Amazon is a prominent retailer in the United States. This brand makes itself a preferred shopping destination by offering outstanding value, inspiration, innovation and an exceptional guest experience that no other retailer can deliver.
-
-This particular business case focuses on the operations of this brand in Brazil and provides insightful information about 100,000 orders placed between 2016 and 2018. The dataset offers a comprehensive view of various dimensions including the order status, price, payment and freight performance, customer location, product attributes, and customer reviews.
-
-## Objective
-Gain insights into this brand's operations in Brazil. Insights and recommendations are provided on the following key areas:
-* Order processing 
-* Pricing strategies
-* Payment and shipping efficiency
-* Customer demographics
-* Product characteristics
-* Customer satisfaction levels
-
-## Data Structure and Initial Checks
-![alt text](https://github.com/Singularity-Coder/SQL-EDA/blob/main/assets/erd.png)
-![alt text](https://github.com/Singularity-Coder/SQL-EDA/blob/main/assets/tb1.png)
-![alt text](https://github.com/Singularity-Coder/SQL-EDA/blob/main/assets/tb2.png)
+# Brazilian E-commerce Sales and Fulfillment Analysis, 2016-2018: Growth, Seasonality, Delivery vs. Estimates
+BigQuery, SQL analysis on retail transactions. CTEs, Date Time functions, Window functions, 
 
 ## Executive Summary
+* **Answer:** No. Men spend more than women on Black Friday: ₹9,437 vs ₹8,735 per transaction (95% CI [₹9,411, ₹9,463] vs [₹8,694, ₹8,776]), a gap of ~8%.
+* **Where the value is:** Ages 26-45 and City B make up the largest share of revenue, driven by customer volume rather than higher order value.
+* **Implication:** If prioritizing segments for targeting, start with these. Confirming ROI needs cost and response data this dataset lacks.
 
-## Credits
-Photo by <a href="https://unsplash.com/@nathaliarosa?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Nathália Rosa</a> on <a href="https://unsplash.com/photos/goods-on-shelf-rWMIbqmOxrY?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
-      
+## About Business
+Walmart is an American multinational retail corporation that operates a chain of supercenters, discount departmental stores, and grocery stores from the United States. Walmart has more than 100 million customers worldwide.
+
+## Problem Statement
+The Management team at Walmart Inc. wants to analyze the customer purchase behavior (specifically, purchase amount) against the customer’s gender and the various other factors to help the business make better decisions. They want to understand if the spending habits differ between male and female customers: Do women spend more on Black Friday than men? (Assume 50 million customers are male and 50 million are female).
+
+## Data Schema (ERD)
+* Tables: walmart_data
+* Total Records: 550,068
+
+![alt text](https://github.com/codehithesh/Black-Friday-Customer-Spend-Analysis/blob/main/assets/erd/erd.png)
+
+
+## Metrics
+
+**Primary metric**
+* Spend per customer: total purchase per User_ID, compared by gender with a 95% CI
+
+**Supporting metrics**
+* Revenue share by segment
+* Customer count per segment
+* Probability of a high-value purchase
+
+**Guardrail metrics**
+* Median spend per customer (checks that the mean isn't driven by outliers)
+
+
+## Insights
+
+#### Spend by Gender
+|  |  |
+| ------------- | ------------- |
+| ![Chart 1](https://github.com/codehithesh/Black-Friday-Customer-Spend-Analysis/blob/main/assets/charts/chart_1.jpg) | ![Chart Age Counts](https://github.com/codehithesh/Black-Friday-Customer-Spend-Analysis/blob/main/assets/charts/chart_Age_counts.jpg) |
+* Men average ₹9,437 per transaction vs ₹8,735 for women (95% CI [₹9,411, ₹9,463] vs [₹8,694, ₹8,776]), a gap of ~8%.
+* Men are ~75% of transactions and ~76% of revenue, so volume matters as much as spend per order.
+* If prioritizing segments, men carry more revenue because there are more of them and they spend slightly more. Whether women are under-reached or simply buy less needs an incrementality test, which this dataset can't run.
+
+#### Spend by Age
+|  |  |
+| ------------- | ------------- |
+| ![Chart Gender Counts](https://github.com/codehithesh/Black-Friday-Customer-Spend-Analysis/blob/main/assets/charts/chart_Gender_counts.jpg) | ![Chart Aov](https://github.com/codehithesh/Black-Friday-Customer-Spend-Analysis/blob/main/assets/charts/chart_aov.jpg) |
+* Ages 26-35 (~40%) and 36-45 (~20%) together contribute ~60% of transactions.
+* AOV is nearly flat across age groups, from ₹8,900 to ₹9,500. Age drives volume, not order value.
+* If prioritizing segments, target by reach (26-45), not by expected basket size.
+
+#### Spend by City Category
+|  |  |
+| ------------- | ------------- |
+| ![Chart Heatmap](https://github.com/codehithesh/Black-Friday-Customer-Spend-Analysis/blob/main/assets/charts/chart_heatmap.jpg) | ![Chart Purchase By Age](https://github.com/codehithesh/Black-Friday-Customer-Spend-Analysis/blob/main/assets/charts/chart_purchase_by_Age.jpg) |
+* City B accounts for ~42% of transactions, ahead of C (~31%) and A (~27%).
+* Median spend is similar across cities, ₹8,050 to ₹8,150.
+* If prioritizing segments, City B offers the largest audience, but per-order value won't differ by city.
+
+#### Spend by Marital Status
+|  |
+| ------------- |
+| ![Chart Purchase By Gender](https://github.com/codehithesh/Black-Friday-Customer-Spend-Analysis/blob/main/assets/charts/chart_purchase_by_Gender.jpg) |
+* Unmarried customers make ~59% of transactions.
+* Spend per transaction differs by less than 1% between groups (₹9,266 vs ₹9,261).
+* Marital status isn't a useful targeting lever on this data.
+
+## Recommendations
+
+#### Marketing
+- **Action:** Prioritize men aged 26-45 for Black Friday targeting.
+- **Evidence:** ~60% of transactions and ~76% of revenue come from these segments.
+- **Verify first:** Run a holdout test on women. This data can't show whether they are under-reached or simply buy less.
+
+#### CRM / Customer Analytics
+- **Action:** Don't segment by marital status or city category for basket-size offers.
+- **Evidence:** Spend per transaction differs by <1% across both.
+- **Verify first:** Test behavioral segments (purchase frequency, product mix), which this data only partly covers.
+
+#### Merchandising / Category Management
+- **Action:** Review the top 3 Product_Category groups (5% of revenue) for promotional visibility.
+- **Evidence:** Revenue-by-category chart
+- **Verify first:** Margin per category. Revenue share alone doesn't justify more promo space.
+
+#### Inventory / Supply Planning
+- **Action:** Use the 95% CI on spend per transaction as a range for demand planning, not a point forecast.
+- **Evidence:** CI width by segment.
+- **Verify first:** Unit volume per category, which this dataset lacks.
+
+#### Pricing
+* Not applicable. No price, cost, or elasticity data.
+
+#### Finance
+* Not applicable. No margin, cost, or budget data.
+
+#### Store / Regional Operations
+* Not applicable. City_Category is an anonymized A/B/C label, not a real region or store.
+
+#### HR / Staffing
+* Not applicable. Nothing in the data relates to it.
+
+
+
+## Limitations
+* **Transactions aren't independent.** Rows are line items, and the same customer appears many times. The CIs treat them as independent, so they are narrower than they should be. Aggregating to User_ID would widen them.
+* **Significance isn't importance.** With 550K rows, almost any gap becomes statistically significant. The ~8% gender gap is reported with effect size for that reason, and practical impact depends on margin, which isn't available.
+* **Single event, single year.** The data covers one Black Friday sample. Patterns may not hold in other periods, and I can't say whether the sample is representative of all Walmart customers.
+* **No cost, margin, or response data.** Recommendations are conditional prioritization, not ROI estimates. Budget changes need an incrementality test first.
+* **Anonymized segments.** City_Category (A/B/C) and Occupation are coded labels, so findings can't be tied to real regions or job types.
+* **Public case-study dataset.** The 50M male / 50M female assumption in the brief extrapolates mean spend per customer, not the sample's ~75/25 gender mix.
+
+
+## Tech Stack
+* Python
+* Numpy
+* Pandas
+* Scipy 
+* Seaborn
+* Matplotlib
+* Statistical Inference
+* Hypothesis Testing
+
+
+## How to run
+* Import `black_friday_customer_spend_analysis.ipynb` into Jupyter notebook. 
+* Then from the menu `Run` -> `Run All Cells`.
