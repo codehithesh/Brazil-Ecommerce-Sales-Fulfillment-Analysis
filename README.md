@@ -4,9 +4,7 @@
 BigQuery, SQL analysis on retail transactions. CTEs, Date Time functions, Window functions
 
 ## Executive Summary
-* **Answer:** No. Men spend more than women on Black Friday: ₹9,437 vs ₹8,735 per transaction (95% CI [₹9,411, ₹9,463] vs [₹8,694, ₹8,776]), a gap of ~8%.
-* **Where the value is:** Ages 26-45 and City B make up the largest share of revenue, driven by customer volume rather than higher order value.
-* **Implication:** If prioritizing segments for targeting, start with these. Confirming ROI needs cost and response data this dataset lacks.
+
 
 
 ## Watch Video Presentation
@@ -120,9 +118,9 @@ Do exploratory data analysis, standardizing custom data processing, Target's ope
 
 ## Tech Stack
 * BigQuery
-* SQL - CTEs, WIndow Functions
+* SQL
 
 
 ## How to run
 * Import `black_friday_customer_spend_analysis.ipynb` into Jupyter notebook. 
-* Copy each SQL query and paste in Google BigQuery.
+* Then from the menu `Run` -> `Run All Cells` (OR) Copy each SQL queries and run them in MySQL server where data is loaded. Check dataset in `assets/dataset`.
