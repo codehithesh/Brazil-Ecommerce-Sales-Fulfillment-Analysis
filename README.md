@@ -95,37 +95,17 @@ Do exploratory data analysis, standardizing custom data processing, Target's ope
 
 ## Recommendations
 
-#### Marketing
-- **Action:** Prioritize men aged 26-45 for Black Friday targeting.
-- **Evidence:** ~60% of transactions and ~76% of revenue come from these segments.
-- **Verify first:** Run a holdout test on women. This data can't show whether they are under-reached or simply buy less.
+1. **Focus on High-Growth Regions:**
+* Concentrate fulfillment assets in high-volume hubs (**SP, RJ, MG**). Adding micro-fulfillment centers in these locations will lower shipping times and reduce freight expenses.
 
-#### CRM / Customer Analytics
-- **Action:** Don't segment by marital status or city category for basket-size offers.
-- **Evidence:** Spend per transaction differs by <1% across both.
-- **Verify first:** Test behavioral segments (purchase frequency, product mix), which this data only partly covers.
+2. **Optimize Carrier Networks in High-Freight States:**
+* Remote regions (Ex: **RR, AP**) show higher freight costs and longer delivery times. Partnering with regional logistics providers or standardizing parcel size limits can help lower shipping fees.
 
-#### Merchandising / Category Management
-- **Action:** Review the top 3 Product_Category groups (5% of revenue) for promotional visibility.
-- **Evidence:** Revenue-by-category chart
-- **Verify first:** Margin per category. Revenue share alone doesn't justify more promo space.
+3. **Refine Delivery Estimation Models:**
+* Several states receive packages 15–20 days ahead of the estimated date. Adjusting estimation algorithms to reflect realistic timelines will improve conversion rates without sacrificing customer satisfaction.
 
-#### Inventory / Supply Planning
-- **Action:** Use the 95% CI on spend per transaction as a range for demand planning, not a point forecast.
-- **Evidence:** CI width by segment.
-- **Verify first:** Unit volume per category, which this dataset lacks.
-
-#### Pricing
-* Not applicable. No price, cost, or elasticity data.
-
-#### Finance
-* Not applicable. No margin, cost, or budget data.
-
-#### Store / Regional Operations
-* Not applicable. City_Category is an anonymized A/B/C label, not a real region or store.
-
-#### HR / Staffing
-* Not applicable. Nothing in the data relates to it.
+4. **Leverage Payment Preferences:**
+* Offer flexible installment options and exclusive credit card cash-back promotions during peak sales hours (**13:00 to 22:00**) to drive basket sizes and conversion rates.
 
 
 
