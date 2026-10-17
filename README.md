@@ -95,19 +95,19 @@ The objective of this analysis is to perform exploratory data analysis on Target
 * The operational challenge is state-level imbalance: remote states such as RR, AP, AM, and AL have substantially slower average transit times and much higher freight values, while SP and nearby states remain comparatively efficient.
 
 ## Recommendations
+1. **Prioritize Southeast fulfillment capacity**
+   * Maintain or expand fulfillment, inventory, and last-mile capacity in **SP, RJ, and MG**, where most customer demand is concentrated.
+   * A hub-and-spoke model around the Southeast is more efficient than a broad national footprint.
 
-1. **Focus on High-Growth Regions:**
-* Concentrate fulfillment assets in high-volume hubs (**SP, RJ, MG**). Adding micro-fulfillment centers in these locations will lower shipping times and reduce freight expenses.
+2. **Rework logistics strategy in high-fright states**
+   * States like **RR, AP, AM, AL, and PA** show both high freight costs and slow delivery times. This points to carrier underperformance, long-haul routing, or sparse network density.
+   * Consider regional carriers, cross-docking, or routed consolidation to reduce shipping cost in these states.
 
-2. **Optimize Carrier Networks in High-Freight States:**
-* Remote regions (Ex: **RR, AP**) show higher freight costs and longer delivery times. Partnering with regional logistics providers or standardizing parcel size limits can help lower shipping fees.
+3. **Set delivery promises more precisely**
+   * Because many orders arrive earlier than estimated, the current delivery estimate appears conservative. Tightening estimated lead times can improve customer experience without harming trust, but the model should still account for remote-state variance.
 
-3. **Refine Delivery Estimation Models:**
-* Several states receive packages 15–20 days ahead of the estimated date. Adjusting estimation algorithms to reflect realistic timelines will improve conversion rates without sacrificing customer satisfaction.
-
-4. **Leverage Payment Preferences:**
-* Offer flexible installment options and exclusive credit card cash-back promotions during peak sales hours (**13:00 to 22:00**) to drive basket sizes and conversion rates.
-
+4. **Align payment offers to the dominant mix**
+   * Credit cards dominate transactions, so installment offers and cashback promotions remain relevant levers. In regions with heavy voucher or UPI usage, localized payment messaging may also improve conversion.
 ## Limitations
 * **Partial coverage across time.** The dataset includes a partial year in 2016 and only through October in 2018, so the time series is not fully balanced across the full 2016–2018 period.
 * **Delivery metrics are computed only for delivered orders.** Canceled, unavailable, and other non-delivered states are excluded from the speed-and-variance analysis.
