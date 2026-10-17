@@ -1,11 +1,14 @@
 ![alt text](https://github.com/codehithesh/Brazil-Ecommerce-Sales-Fulfillment-Analysis/blob/main/assets/banner.jpg)
 
 # Brazilian E-commerce Sales and Fulfillment Analysis, 2016-2018: Growth, Seasonality, Delivery vs. Estimates
-BigQuery, SQL analysis on retail transactions. CTEs, Date Time functions, Window functions
+BigQuery + SQL analysis of Target Brazil retail transactions using order, customer, payment, and fulfillment data.
 
 ## Executive Summary
+The dataset covers roughly 100k orders placed between September 2016 and October 2018 across 4,119 cities and 27 Brazilian states. The business is highly concentrated in the Southeast, especially Sao Paulo, Rio de Janeiro, and Minas Gerais, which together account for about 68% of all orders. This means the business is driven by a few large regional markets, and operational decisions around fulfillment, staffing, and merchandising should be weighted toward those areas.
 
+Order volume rose substantially from 2017 to 2018, with strong seasonality and a clear concentration of purchases during daytime and peak shopping months. For Brazil, the pattern is not a single Black Friday event but a broader e-commerce growth trend with repeated demand spikes. Payment behavior is also highly skewed toward credit cards, which represent roughly 74% of transactions, while UPI is the second-largest method at about 19%. This matters for conversion design and installment-based promotions.
 
+Delivery execution is generally healthy but uneven across states. Delivered orders take about 12.1 days on average from purchase to customer receipt, and 92% arrive on or before the estimated delivery date. However, remote and lower-connectivity states such as RR, AP, AM, and AL see much longer delivery times and much higher shipping costs, which suggests freight inefficiency and last-mile bottlenecks. The strongest operational opportunity is not to chase all states equally, but to optimize the Southeast-heavy demand base while redesigning carrier and fulfillment strategies for the slower remote states.
 
 ## Watch Video Presentation
 
@@ -13,83 +16,83 @@ BigQuery, SQL analysis on retail transactions. CTEs, Date Time functions, Window
   <img src="https://img.youtube.com/vi/c316uVDjDFY/hqdefault.jpg" alt="Watch Video on YouTube" width="400" />
 </a>
 
-
 ## About Business
-Target is a globally renowned brand and a prominent retailer in the United States. Target makes it easy, shop-worthy, and inspiring, offering a store-hug feeling, e-commerce site, and apps for seamless and spent experience that's standard for modern retail.
+Target is a globally renowned retail brand and a prominent retailer in the United States. The company operates a store experience, e-commerce website, and apps designed to make shopping simple and seamless. This project analyzes Target's Brazilian operations using public transactional data to understand order growth, customer geography, freight economics, and delivery performance.
 
 ## Problem Statement
-Do exploratory data analysis, standardizing custom data processing, Target's operations in Brazil, customer experience, seller performance, logistics, freight cost, order processing, delivery speed, and overall performance, offering comprehensive insights into customer characteristics, product attributes, and customer behavior.
+The objective of this analysis is to perform exploratory data analysis on Target Brazil's e-commerce dataset and translate the data into actionable business insight. The project evaluates customer geography, order volume, payment behavior, seller and fulfillment performance, freight costs, delivery speed, and order timing to inform operational planning and performance management.
 
 ## Data Schema (ERD)
 * Tables:
     * customers.csv
     * geolocation.csv
     * order_items.csv
-    * order_payments.csv
+    * payments.csv
     * order_reviews.csv
     * orders.csv
     * products.csv
     * sellers.csv
-* Total Records: 100k
+* Approximate total records: 100k orders across the public dataset
 
 ![alt text](https://github.com/codehithesh/Brazil-Ecommerce-Sales-Fulfillment-Analysis/blob/main/assets/erd/erd.png)
-
 
 ## Metrics
 
 **Primary metrics**
-* **Monthly order count** (`COUNT(DISTINCT order_id)` by `order_purchase_timestamp` month): answers "is it growing?"
-* **Delivery vs. estimate gap**: `order_estimated_delivery_date - order_delivered_customer_date`, in days, delivered orders only. Positive means early, negative means late. Answers "are orders arriving on time?"
+* Monthly order count by `order_purchase_timestamp` month: answers whether demand is growing over time.
+* Delivery gap: `order_estimated_delivery_date - order_delivered_customer_date` in days, for delivered orders only. Positive means early; negative means late.
 
 **Supporting metrics**
-* On-time delivery rate: share of delivered orders with gap >= 0
-* Average delivery time (purchase to delivery, in days) by state
-* Order value: total and average `price` per order
-* Freight value: total and average `freight_value` per order, plus freight as a % of price
-* Payment mix: order count by `payment_type`, by month and year
+* On-time or early delivery rate: share of delivered orders with gap >= 0
+* Average purchase-to-delivery time by state
+* Total and average order value (`price` per order) and freight (`freight_value` per order)
+* Payment mix by `payment_type`, month, and year
 * Average `payment_installments` by payment type
-* Order count by customer state and by day of week / hour
+* Order volume by state and by time of day
 
 **Guardrail metrics**
-* Order status mix: share of `delivered` vs. cancelled/unavailable. Delivery metrics use only delivered orders, so this shows how much is excluded.
-* Missing delivery dates: count of delivered orders with null `order_delivered_customer_date`
-* Orders per month, flagged for sparse 2016 and incomplete late 2018 months, so growth isn't overstated
-* Median alongside mean for delivery time, price, and freight (all are right-skewed)
-
+* Order status mix: delivered vs. shipped, canceled, unavailable, and other non-delivered states
+* Non-delivered orders excluded from delivery performance analysis
+* Monthly counts flagged for partial 2016 coverage and incomplete late-2018 coverage
+* Median and mean reported together where distributions are skewed
 
 ## Insights
 
-#### Spend by Gender
+### Growth and seasonality
 |  |  |
-| ------------- | ------------- |
-| ![Chart 1](https://github.com/codehithesh/Black-Friday-Customer-Spend-Analysis/blob/main/assets/charts/chart_1.jpg) | ![Chart Age Counts](https://github.com/codehithesh/Black-Friday-Customer-Spend-Analysis/blob/main/assets/charts/chart_Age_counts.jpg) |
-* Men average ₹9,437 per transaction vs ₹8,735 for women (95% CI [₹9,411, ₹9,463] vs [₹8,694, ₹8,776]), a gap of ~8%.
-* Men are ~75% of transactions and ~76% of revenue, so volume matters as much as spend per order.
-* If prioritizing segments, men carry more revenue because there are more of them and they spend slightly more. Whether women are under-reached or simply buy less needs an incrementality test, which this dataset can't run.
+| --- | --- |
+| ![Orders by year](assets/charts/chart_2_1.jpg) | ![Monthly seasonality](assets/charts/chart_2_2.jpg) |
 
-#### Spend by Age
+* The order base increases from 2017 to 2018, indicating sustained e-commerce expansion rather than a single short-lived spike.
+* Monthly ordering is seasonal, with several high-volume months across the year and a strong concentration in the middle and late parts of the year.
+* Afternoon and evening purchases dominate the order mix, suggesting the busiest customer activity is in the 12:00–22:00 window.
+
+### Regional demand concentration
 |  |  |
-| ------------- | ------------- |
-| ![Chart Gender Counts](https://github.com/codehithesh/Black-Friday-Customer-Spend-Analysis/blob/main/assets/charts/chart_Gender_counts.jpg) | ![Chart Aov](https://github.com/codehithesh/Black-Friday-Customer-Spend-Analysis/blob/main/assets/charts/chart_aov.jpg) |
-* Ages 26-35 (~40%) and 36-45 (~20%) together contribute ~60% of transactions.
-* AOV is nearly flat across age groups, from ₹8,900 to ₹9,500. Age drives volume, not order value.
-* If prioritizing segments, target by reach (26-45), not by expected basket size.
+| --- | --- |
+| ![Top states by order evolution](assets/charts/chart_3_1.jpg) | ![Top states by unique customers](assets/charts/chart_3_2.jpg) |
 
-#### Spend by City Category
+* Demand is highly concentrated in a few states: São Paulo alone represents about 42% of all orders, followed by Rio de Janeiro and Minas Gerais at roughly 13% and 12% respectively.
+* The top five states account for the majority of e-commerce activity, which supports a network strategy that is centered on the Southeast and nearby high-volume hubs.
+* This pattern means expansion and space planning should prioritize fulfillment density in the strongest markets rather than spreading assets evenly across all regions.
+
+### Payment behavior and order economics
 |  |  |
-| ------------- | ------------- |
-| ![Chart Heatmap](https://github.com/codehithesh/Black-Friday-Customer-Spend-Analysis/blob/main/assets/charts/chart_heatmap.jpg) | ![Chart Purchase By Age](https://github.com/codehithesh/Black-Friday-Customer-Spend-Analysis/blob/main/assets/charts/chart_purchase_by_Age.jpg) |
-* City B accounts for ~42% of transactions, ahead of C (~31%) and A (~27%).
-* Median spend is similar across cities, ₹8,050 to ₹8,150.
-* If prioritizing segments, City B offers the largest audience, but per-order value won't differ by city.
+| --- | --- |
+| ![Payment growth](assets/charts/chart_4_1.jpg) | ![Average order item price by state](assets/charts/chart_4_2.jpg) |
 
-#### Spend by Marital Status
-|  |
-| ------------- |
-| ![Chart Purchase By Gender](https://github.com/codehithesh/Black-Friday-Customer-Spend-Analysis/blob/main/assets/charts/chart_purchase_by_Gender.jpg) |
-* Unmarried customers make ~59% of transactions.
-* Spend per transaction differs by less than 1% between groups (₹9,266 vs ₹9,261).
-* Marital status isn't a useful targeting lever on this data.
+* Credit cards are the dominant payment method, accounting for about 74% of transactions. UPI is the second-largest method at roughly 19%, while voucher and debit card are secondary channels.
+* Average order value is around R$137.75, with average freight of about R$22.82 per order. Freight represents around 16.6% of the average order value, which is meaningful but not dominant enough to erase the value of volume growth.
+* Payment usage is not evenly distributed across every state, which matters for localized promotions, installment offers, and checkout design.
+
+### Delivery performance and logistics risk
+|  |  |
+| --- | --- |
+| ![Delivery performance variance](assets/charts/chart_5_1.jpg) | ![Fastest vs. slowest states](assets/charts/chart_5_3.jpg) |
+
+* Delivered orders take an average of 12.1 days to reach the customer, with a median of 10 days. This suggests that the median experience is strong, while a small set of longer-tail outliers pulls the mean upward.
+* The average delivery gap versus estimate is about +10.9 days, which means most orders arrive earlier than promised. About 92% of delivered orders arrive on or before their estimated date.
+* The operational challenge is state-level imbalance: remote states such as RR, AP, AM, and AL have substantially slower average transit times and much higher freight values, while SP and nearby states remain comparatively efficient.
 
 ## Recommendations
 
@@ -105,22 +108,20 @@ Do exploratory data analysis, standardizing custom data processing, Target's ope
 4. **Leverage Payment Preferences:**
 * Offer flexible installment options and exclusive credit card cash-back promotions during peak sales hours (**13:00 to 22:00**) to drive basket sizes and conversion rates.
 
-
-
 ## Limitations
-* **Transactions aren't independent.** Rows are line items, and the same customer appears many times. The CIs treat them as independent, so they are narrower than they should be. Aggregating to User_ID would widen them.
-* **Significance isn't importance.** With 550K rows, almost any gap becomes statistically significant. The ~8% gender gap is reported with effect size for that reason, and practical impact depends on margin, which isn't available.
-* **Single event, single year.** The data covers one Black Friday sample. Patterns may not hold in other periods, and I can't say whether the sample is representative of all Walmart customers.
-* **No cost, margin, or response data.** Recommendations are conditional prioritization, not ROI estimates. Budget changes need an incrementality test first.
-* **Anonymized segments.** City_Category (A/B/C) and Occupation are coded labels, so findings can't be tied to real regions or job types.
-* **Public case-study dataset.** The 50M male / 50M female assumption in the brief extrapolates mean spend per customer, not the sample's ~75/25 gender mix.
-
+* **Partial coverage across time.** The dataset includes a partial year in 2016 and only through October in 2018, so the time series is not fully balanced across the full 2016–2018 period.
+* **Delivery metrics are computed only for delivered orders.** Canceled, unavailable, and other non-delivered states are excluded from the speed-and-variance analysis.
+* **State-level interpretation is approximate.** Customer state reflects where the order was placed or delivered, but the operational origin of the shipment may differ from the customer geography.
+* **No margin or profitability data.** The analysis can quantify volume, shipping cost, and delivery behavior, but cannot determine unit economics or profitability by product, seller, or region.
+* **Public benchmark data only.** This is a public e-commerce dataset and may not fully capture all of Target Brazil's operating conditions, seasonality, or network constraints.
 
 ## Tech Stack
 * BigQuery
-* SQL
-
+* SQL (CTEs, window functions, date logic)
+* Python and Pandas for exploratory analysis
+* Matplotlib and Seaborn for chart generation
 
 ## How to run
-* Import `black_friday_customer_spend_analysis.ipynb` into Jupyter notebook. 
-* Then from the menu `Run` -> `Run All Cells` (OR) Copy each SQL queries and run them in MySQL server where data is loaded. Check dataset in `assets/dataset`.
+* Open `retail_sales_and_fulfillment_analysis.ipynb` in Jupyter or VS Code.
+* Run all cells in order to reproduce the EDA and generate the charts under `assets/charts`.
+* If you prefer SQL-only analysis, load the CSV files from `assets/dataset` into a database and run the queries in the notebook.
