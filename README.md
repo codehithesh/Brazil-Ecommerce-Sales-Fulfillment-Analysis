@@ -95,17 +95,19 @@ The objective of this analysis is to perform exploratory data analysis on Target
 * The operational challenge is state-level imbalance: remote states such as RR, AP, AM, and AL have substantially slower average transit times and much higher freight values, while SP and nearby states remain comparatively efficient.
 
 ## Recommendations
-1. **Focus on High-Growth Regions:**
-* Concentrate fulfillment assets in high-volume hubs (**SP, RJ, MG**). Adding micro-fulfillment centers in these locations will lower shipping times and reduce freight expenses.
+**Prioritize Southeast fulfillment capacity**
+   * Maintain or expand fulfillment, inventory, and last-mile capacity in **SP, RJ, and MG**, where most customer demand is concentrated.
+   * A hub-and-spoke model around the Southeast is more efficient than a broad national footprint.
 
-2. **Optimize Carrier Networks in High-Freight States:**
-* Remote regions (Ex: **RR, AP**) show higher freight costs and longer delivery times. Partnering with regional logistics providers or standardizing parcel size limits can help lower shipping fees.
+**Rework logistics strategy in high-fright states**
+   * States like **RR, AP, AM, AL, and PA** show both high freight costs and slow delivery times. This points to carrier underperformance, long-haul routing, or sparse network density.
+   * Consider regional carriers, cross-docking, or routed consolidation to reduce shipping cost in these states.
 
-3. **Refine Delivery Estimation Models:**
-* Several states receive packages 15–20 days ahead of the estimated date. Adjusting estimation algorithms to reflect realistic timelines will improve conversion rates without sacrificing customer satisfaction.
+**Set delivery promises more precisely**
+   * Because many orders arrive earlier than estimated, the current delivery estimate appears conservative. Tightening estimated lead times can improve customer experience without harming trust, but the model should still account for remote-state variance.
 
-4. **Leverage Payment Preferences:**
-* Offer flexible installment options and exclusive credit card cash-back promotions during peak sales hours (**13:00 to 22:00**) to drive basket sizes and conversion rates.
+**Align payment offers to the dominant mix**
+   * Credit cards dominate transactions, so installment offers and cashback promotions remain relevant levers. In regions with heavy voucher or UPI usage, localized payment messaging may also improve conversion.
 
 ## Limitations
 * **Partial coverage across time.** The dataset includes a partial year in 2016 and only through October in 2018, so the time series is not fully balanced across the full 2016–2018 period.
@@ -115,10 +117,10 @@ The objective of this analysis is to perform exploratory data analysis on Target
 * **Public benchmark data only.** This is a public e-commerce dataset and may not fully capture all of Target Brazil's operating conditions, seasonality, or network constraints.
 
 ## Tech Stack
+* SQL (CTEs, Joins, Date)
+* Python and Pandas
+* Matplotlib and Seaborn
 * BigQuery
-* SQL (CTEs, window functions, date logic)
-* Python and Pandas for exploratory analysis
-* Matplotlib and Seaborn for chart generation
 
 ## How to run
 * Open `retail_sales_and_fulfillment_analysis.ipynb` in Jupyter or VS Code.
