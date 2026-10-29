@@ -10,12 +10,6 @@ Orders grew a lot from 2017 to 2018, and demand clearly follows seasons, with mo
 
 Delivery works well overall, but not evenly everywhere. A delivered order takes about 12.1 days on average to reach the customer, and 92% show up on or before the estimated date. The trouble is in remote, harder-to-reach states like RR, AP, AM, and AL, where deliveries take much longer and shipping costs a lot more. That points to freight inefficiency and last-mile bottlenecks. So the best opportunity isn't to chase every state equally. It's to get the most out of the Southeast-heavy demand base while rethinking carrier and fulfillment plans for the slower remote states.
 
-## Watch Video Presentation
-
-<a href="https://www.youtube.com/watch?v=c316uVDjDFY" target="_blank">
-  <img src="https://img.youtube.com/vi/c316uVDjDFY/hqdefault.jpg" alt="Watch Video on YouTube" width="400" />
-</a>
-
 ## About Business
 Target is a well-known global retail brand and one of the biggest retailers in the United States. It runs physical stores, an e-commerce website, and apps built to make shopping easy. In this project, we look at Target's Brazilian operations using public transaction data, so we can see how orders have grown, where customers are, what freight costs, and how deliveries perform.
 
