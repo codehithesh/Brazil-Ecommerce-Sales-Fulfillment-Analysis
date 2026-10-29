@@ -396,8 +396,7 @@ cte2 as (
 		cte1
 	where
 		order_purchase_timestamp is not null and
-        order_purchase_timestamp between "2017-01-01 00:00:00" and "2018-09-01 23:59:59" and
-        order_status NOT IN ('canceled', 'unavailable')
+        order_purchase_timestamp between "2017-01-01 00:00:00" and "2018-09-01 00:00:00"
 )
 select
     *,
@@ -406,12 +405,12 @@ select
     	order_purchase_timestamp
     ) as `delivery_days`,
     datediff(
-    	order_delivered_customer_date, 
-    	order_estimated_delivery_date
-    ) as `days_vs_estimate`, -- +ve is late
+    	order_estimated_delivery_date, 
+    	order_delivered_customer_date
+    ) as `days_vs_estimate`, -- +ve is early
     case 
     	when order_delivered_customer_date is null then null
-    	when order_delivered_customer_date > order_estimated_delivery_date then 1
+    	when date(order_delivered_customer_date) > date(order_estimated_delivery_date) then 1
     	else 0
     end as `is_late`
 from
@@ -432,7 +431,7 @@ SELECT
     SUM(oi.price) AS order_price,
     SUM(oi.freight_value) AS order_freight
 FROM orders_view o
-JOIN customers c ON o.customer_id = c.customer_id
+JOIN customers_view c ON o.customer_id = c.customer_id
 JOIN order_items oi ON o.order_id = oi.order_id
 JOIN brazil_state_names bsn ON c.customer_state = bsn.`State code`
 GROUP BY 
@@ -524,7 +523,7 @@ select
 	max(payment_installments) as `max_installments`,
 	count(*) as `n_payments`
 from
-	payments
+	payments_view
 group by
 	order_id;
 
